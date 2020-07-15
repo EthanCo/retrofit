@@ -51,7 +51,8 @@ final class BodyObservable<T> extends Observable<T> {
     @Override
     public void onNext(Response<R> response) {
       if (response.isSuccessful()) {
-        observer.onNext(response.body());
+        R body = InnerUtils.checkRecorder(response);
+        observer.onNext(body);
       } else {
         terminated = true;
         Throwable t = new HttpException(response);
